@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({key}) : super(key: key);
   static const title = "Noor-e-Mehdavia";
 
