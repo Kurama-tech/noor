@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
-import 'dart:async';
 
 import 'package:noor/provider/count.dart';
 import 'package:noor/views/counterView.dart';
 import 'package:provider/provider.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:circular_reveal_animation/circular_reveal_animation.dart';
+
 import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
 
