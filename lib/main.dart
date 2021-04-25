@@ -1,66 +1,56 @@
+// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:noor/views/counterView.dart';
+import 'package:noor/views/homeView.dart';
 import 'package:provider/provider.dart';
 import 'package:noor/provider/count.dart';
 
+import 'package:noor/views/counterView.dart';
+
+
+
+/// This is a reimplementation of the default Flutter application using provider + [ChangeNotifier].
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    /// Providers are above [MyApp] instead of inside it, so that tests
+    /// can use [MyApp] while mocking the providers
+    MultiProvider(
+      
+      
+      providers: [
+        ChangeNotifierProvider(create: (_) => Counter(), ),
+        
+      ],
+      child: const MyApp(),
+    ),
+    
+  );
 }
+
+/// Mix-in [DiagnosticableTreeMixin] to have access to [debugFillProperties] for the devtool
+// ignore: prefer_mixin
+
 
 class MyApp extends StatelessWidget {
+  const MyApp({key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: Counter(),
+    return MaterialApp(
+      home: MyHomePage(),
+      theme: ThemeData(
+        primaryColor: Colors.greenAccent,
+        textTheme: TextTheme(
+          headline4: TextStyle(color: Colors.black)
         ),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: MyHomePage(title: "Noor-e-Mehdavia"),
-      ),
+        appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
+      )
+      
+
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final String title;
-  MyHomePage({this.title});
-  void _incrementCounter(BuildContext context) {
-    Provider.of<Counter>(context, listen: false).incrementCounter();
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    var counter = Provider.of<Counter>(context).getCounter;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _incrementCounter(context),
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
