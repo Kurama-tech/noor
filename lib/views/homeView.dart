@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:noor/provider/count.dart';
-import 'package:noor/views/counterView.dart';
-import 'package:provider/provider.dart';
-
 import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  _MyHomePage createState() => _MyHomePage();
+}
+
+class _MyHomePage extends State<MyHomePage> {
   static const title = "Noor-e-Mehdavia";
 
-  get page => null;
+  var page = 'Blue';
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,8 @@ class MyHomePage extends StatelessWidget {
             systemNavigationBarColor: Colors.greenAccent,
             systemNavigationBarIconBrightness: Brightness.dark),
       ),
-      extendBodyBehindAppBar: false,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       bottomNavigationBar: PandaBar(
         backgroundColor: Theme.of(context).primaryColor,
         buttonData: [
@@ -50,26 +49,33 @@ class MyHomePage extends StatelessWidget {
         ],
         onChange: (id) {
           setState(() {
-            var page = id;
+            page = id;
           });
         },
         onFabButtonPressed: () {
-          return Container(
-            child: Text("Hello"),
-          );
+          setState(() {
+            page = 'fab';
+          });
         },
       ),
       body: Builder(
         builder: (context) {
           switch (page) {
             case 'Grey':
-              return Container(color: Colors.black);
+              return Container(color: Colors.grey);
             case 'Blue':
               return Container(color: Colors.blue.shade900);
             case 'Red':
               return Container(color: Colors.red.shade900);
             case 'Yellow':
               return Container(color: Colors.yellow.shade700);
+            case 'fab':
+              return Container(
+                child: Text(
+                  "Hello ",
+                  style: TextStyle(color: Colors.black),
+                ),
+              );
             default:
               return Container();
           }
@@ -78,5 +84,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-
-void setState(Null Function() param0) {}
