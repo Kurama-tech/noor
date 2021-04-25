@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:noor/provider/count.dart';
-import 'package:noor/views/counterView.dart';
-import 'package:provider/provider.dart';
-
+import 'package:pandabar/fab-button.view.dart';
 import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({key}) : super(key: key);
+  _MyHomePage createState() => _MyHomePage();
+}
+
+class _MyHomePage extends State<MyHomePage> {
   static const title = "Noor-e-Mehdavia";
 
-  get page => null;
+  var page = 'Blue';
 
   @override
   Widget build(BuildContext context) {
@@ -37,39 +37,49 @@ class MyHomePage extends StatefulWidget {
             systemNavigationBarColor: Colors.greenAccent,
             systemNavigationBarIconBrightness: Brightness.dark),
       ),
-      extendBodyBehindAppBar: false,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       bottomNavigationBar: PandaBar(
+        fabIcon:  FaIcon(FontAwesomeIcons.kaaba),
+        
         backgroundColor: Theme.of(context).primaryColor,
         buttonData: [
-          PandaBarButtonData(id: 'Grey', icon: Icons.dashboard, title: 'Grey'),
-          PandaBarButtonData(id: 'Blue', icon: Icons.book, title: 'Blue'),
-          PandaBarButtonData(
-              id: 'Red', icon: Icons.account_balance_wallet, title: 'Red'),
-          PandaBarButtonData(
-              id: 'Yellow', icon: Icons.notifications, title: 'Yellow'),
+          PandaBarButtonData(id: 'Grey', icon: Icons.home, title: 'Home'),
+          PandaBarButtonData(id: 'Blue', icon: Icons.calendar_today, title: 'Calender'),
+          PandaBarButtonData(id: 'Red', icon: Icons.place, title: 'Maps'),
+          PandaBarButtonData(id: 'Yellow', icon: Icons.perm_media, title: 'Media'),
+         
         ],
         onChange: (id) {
           setState(() {
-            var page = id;
+            page = id;
           });
         },
         onFabButtonPressed: () {
-          return Container(
-            child: Text("Hello"),
-          );
+        
+          setState(() {
+            page = 'fab';
+          });
         },
       ),
       body: Builder(
         builder: (context) {
           switch (page) {
             case 'Grey':
-              return Container(color: Colors.black);
+              return Container(color: Colors.grey);
             case 'Blue':
               return Container(color: Colors.blue.shade900);
             case 'Red':
               return Container(color: Colors.red.shade900);
             case 'Yellow':
               return Container(color: Colors.yellow.shade700);
+            case 'fab':
+              return Container(
+                child: Text(
+                  "Hello ",
+                  style: TextStyle(color: Colors.black),
+                ),
+              );
             default:
               return Container();
           }
@@ -78,5 +88,3 @@ class MyHomePage extends StatefulWidget {
     );
   }
 }
-
-void setState(Null Function() param0) {}
