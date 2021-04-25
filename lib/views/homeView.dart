@@ -42,6 +42,7 @@ class _MyHomePage extends State<MyHomePage> {
       bottomNavigationBar: PandaBar(
         fabIcon:  FaIcon(FontAwesomeIcons.kaaba),
         
+        
         backgroundColor: Theme.of(context).primaryColor,
         buttonData: [
           PandaBarButtonData(id: 'Grey', icon: Icons.home, title: 'Home'),
