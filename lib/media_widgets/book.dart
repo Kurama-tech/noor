@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:noor/model/books.dart';
 import 'package:http/http.dart' as http;
 import 'package:noor/provider/timingsProvider.dart';
+import 'package:noor/views/pdfViewer.dart';
 import 'package:provider/provider.dart';
 
 class Book extends StatefulWidget {
@@ -50,13 +51,22 @@ class _Book extends State<Book> {
                 itemBuilder: (context, i) {
                   final datalist = booksModel.booksData[i];
                   return Container(
-                    child: Card(
-                      child: Column(
-                        children: [
-                          Text(datalist.identifier),
-                          Text(datalist.name),
-                          Text(datalist.url)
-                        ],
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Pdfview(pdf: datalist.url)));
+                      },
+                      child: Card(
+                        child: Column(
+                          children: [
+                            Text(datalist.identifier),
+                            Text(datalist.name),
+                            Text(datalist.url)
+                          ],
+                        ),
                       ),
                     ),
                   );
