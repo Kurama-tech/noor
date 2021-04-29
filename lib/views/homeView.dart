@@ -1,15 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:noor/provider/timingsProvider.dart';
 
 import 'package:noor/views/homePageView.dart';
+import 'package:noor/views/qiblaView.dart';
 import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import 'package:noor/views/mediaView.dart';
 import 'package:provider/provider.dart';
-
 
 class MyHomePage extends StatefulWidget {
   _MyHomePage createState() => _MyHomePage();
@@ -22,7 +21,6 @@ class _MyHomePage extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -80,18 +78,14 @@ class _MyHomePage extends State<MyHomePage> {
             case 'Yellow':
               return Media();
             case 'fab':
-              return Container(
-                child: Text(
-                  "Hello ",
-                  style: TextStyle(color: Colors.black),
-                ),
-              );
+              return Qibla();
             default:
-              return Container(child: CircularProgressIndicator(),);
+              return Container(
+                child: CircularProgressIndicator(),
+              );
           }
         },
       ),
     );
   }
 }
-
