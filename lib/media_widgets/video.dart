@@ -56,8 +56,16 @@ class _Video extends State<Video> {
                     child: InkWell(
                     child: Card(
                       elevation: 5,
+                      child:Center(
+                        child: ListTile(
+                      leading: Icon(Icons.videocam, size: 35.0),
+                      title: Text(datalist.name,
+                      style: TextStyle(fontSize: 15.0),
                       
-                      child: Center(
+                      ),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                      
+                      /* child: Center(
                         child: RichText(
                           text: TextSpan(
                             
@@ -65,7 +73,7 @@ class _Video extends State<Video> {
                             style: TextStyle(
                    color: Colors.grey,
                    fontSize: 15,
-                   fontWeight: FontWeight.bold)),
+                   fontWeight: FontWeight.bold)), */
                      /*  child: Column(
                         children: [
                           Text(datalist.identifier),

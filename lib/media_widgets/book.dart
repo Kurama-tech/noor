@@ -64,13 +64,21 @@ class _Book extends State<Book> {
                       },
                       child: Card(
                         elevation: 5,
-                        child: Center(
+                        child:Center(
+                        child: ListTile(
+                      leading: Icon(Icons.menu_book, size: 35.0),
+                      title: Text(datalist.name,
+                      style: TextStyle(fontSize: 17.0),
+                      
+                      ),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                        /* child: Center(
                         child: RichText(
                           text: TextSpan(
                             
                             text: datalist.name,
                             style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20), */
                         /* child: Column(
                           
                           children: [
@@ -81,7 +89,8 @@ class _Book extends State<Book> {
                         ), */
                       ),
                     ),
-                      ),
+                    
+
                     ),
                     ),
                   );
