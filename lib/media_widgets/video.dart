@@ -50,7 +50,13 @@ class _Video extends State<Video> {
                 itemBuilder: (context, i) {
                   final datalist = videosModel.videos[i];
                   return Container(
+                    padding: EdgeInsets.fromLTRB(10,10,10,0),
+                    height: 220,
+                    width: double.maxFinite,
+                    child: InkWell(
                     child: Card(
+                      elevation: 5,
+   
                       child: Column(
                         children: [
                           Text(datalist.identifier),
@@ -58,6 +64,10 @@ class _Video extends State<Video> {
                           Text(datalist.url)
                         ],
                       ),
+                    ),
+                    onTap: () {
+                      
+                    },
                     ),
                   );
                 }));

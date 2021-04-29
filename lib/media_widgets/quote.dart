@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:noor/model/quotes.dart';
 import 'package:http/http.dart' as http;
 import 'package:noor/provider/timingsProvider.dart';
+import 'package:noor/views/imagedetails.dart';
 import 'package:provider/provider.dart';
 
 class Quote extends StatefulWidget {
@@ -52,8 +53,15 @@ class _Quote extends State<Quote> {
                 ),
                 itemBuilder: (context, i) {
                   final datalist = quotesModel.quotes[i];
-                  print(datalist);
-                  return Image.network(datalist.url);
+                  return InkWell(
+                      child: Image.network(datalist.url),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ImageDetails(datalist.url)));
+                      });
                 }));
         
   }

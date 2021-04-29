@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:noor/model/photos.dart';
 import 'package:noor/provider/timingsProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:noor/views/imagedetails.dart';
 
 class Photo extends StatefulWidget {
   Photo({Key key, this.title}) : super(key: key);
@@ -54,8 +55,16 @@ class _Photo extends State<Photo> {
                 ),
                 itemBuilder: (context, i) {
                   final datalist = photoModel.photos[i];
-                  print(datalist);
-                  return Image.network(datalist.url);
+                  //return Image.network(datalist.url);
+                  return InkWell(
+                      child: Image.network(datalist.url),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ImageDetails(datalist.url)));
+                      });
                 }));
   }
 }
