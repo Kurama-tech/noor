@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:noor/provider/timingsProvider.dart';
 
 import 'package:noor/views/homePageView.dart';
+import 'package:noor/views/mapView.dart';
 import 'package:noor/views/qiblaView.dart';
 import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
@@ -74,7 +75,7 @@ class _MyHomePage extends State<MyHomePage> {
             case 'Blue':
               return Container(color: Colors.blue.shade900);
             case 'Red':
-              return Container(color: Colors.red.shade900);
+              return ManyMarkersPage();
             case 'Yellow':
               return Media();
             case 'fab':
