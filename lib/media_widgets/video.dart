@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:noor/model/videos.dart';
 import 'package:noor/provider/timingsProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Video extends StatefulWidget {
   Video({Key key, this.title}) : super(key: key);
@@ -50,22 +51,20 @@ class _Video extends State<Video> {
                 itemBuilder: (context, i) {
                   final datalist = videosModel.videos[i];
                   return Container(
-                    
                     height: 100,
-                    
                     child: InkWell(
-                    child: Card(
-                      elevation: 5,
-                      child:Center(
-                        child: ListTile(
-                      leading: Icon(Icons.videocam, size: 35.0),
-                      title: Text(datalist.name,
-                      style: TextStyle(fontSize: 15.0),
-                      
-                      ),
-                      trailing: Icon(Icons.keyboard_arrow_right),
-                      
-                      /* child: Center(
+                      child: Card(
+                        elevation: 5,
+                        child: Center(
+                          child: ListTile(
+                            leading: Icon(Icons.videocam, size: 35.0),
+                            title: Text(
+                              datalist.name,
+                              style: TextStyle(fontSize: 15.0),
+                            ),
+                            trailing: Icon(Icons.keyboard_arrow_right),
+
+                            /* child: Center(
                         child: RichText(
                           text: TextSpan(
                             
@@ -74,21 +73,21 @@ class _Video extends State<Video> {
                    color: Colors.grey,
                    fontSize: 15,
                    fontWeight: FontWeight.bold)), */
-                     /*  child: Column(
+                            /*  child: Column(
                         children: [
                           Text(datalist.identifier),
                           Text(datalist.name),
                           Text(datalist.url)
                         ],
                       ), */
-                    ),
-                    
-                    ),
+                          ),
                         ),
-                        
+                      ),
+                      onTap: () async {
+                            await canLaunch(datalist.url)
+                            ? await launch(datalist.url): throw 'Could not launch $datalist.url';
+                      },
                     ),
-                    
-                    
                   );
                 }));
   }
