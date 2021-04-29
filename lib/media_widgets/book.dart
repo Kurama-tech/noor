@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:noor/model/books.dart';
 import 'package:http/http.dart' as http;
 import 'package:noor/provider/timingsProvider.dart';
+import 'package:noor/views/pdfViewer.dart';
 import 'package:provider/provider.dart';
 
 class Book extends StatefulWidget {
@@ -50,14 +51,38 @@ class _Book extends State<Book> {
                 itemBuilder: (context, i) {
                   final datalist = booksModel.booksData[i];
                   return Container(
-                    child: Card(
-                      child: Column(
-                        children: [
-                          Text(datalist.identifier),
-                          Text(datalist.name),
-                          Text(datalist.url)
-                        ],
+                    padding: EdgeInsets.fromLTRB(10,10,10,0),
+                    height: 100,
+                    width: double.maxFinite,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Pdfview(pdf: datalist.url)));
+                      },
+                      child: Card(
+                        elevation: 5,
+                        child: Center(
+                        child: RichText(
+                          text: TextSpan(
+                            
+                            text: datalist.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                        /* child: Column(
+                          
+                          children: [
+                            Text(datalist.identifier),
+                            Text(datalist.name),
+                            Text(datalist.url)
+                          ],
+                        ), */
                       ),
+                    ),
+                      ),
+                    ),
                     ),
                   );
                 }));
