@@ -27,7 +27,7 @@ class _MyHomePage extends State<MyHomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(0),
             side: BorderSide(width: 2, color: Colors.white)),
         titleSpacing: 7.0,
         title: Container(
