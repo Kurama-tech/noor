@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:noor/model/photos.dart';
@@ -66,11 +67,12 @@ Future<List<Photos>> fetchphoto() async {
   List<Photos> ListModel = [];
   print(uri);
 
-  final response = await http.get(uri);
+  var dio = Dio();
+  final response = await dio.get(uri.toString());
 
   if (response.statusCode == 200) {
     //print(response.body.toString());
-    final data = jsonDecode(response.body);
+    final data = jsonDecode(response.data.toString());
     
     for(Map i in data['results']){
       //print(i);

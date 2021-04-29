@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:noor/views/counterView.dart';
 import 'package:noor/views/homeView.dart';
 import 'package:provider/provider.dart';
-import 'package:noor/provider/count.dart';
+import 'package:noor/provider/timingsProvider.dart';
 
 import 'package:noor/views/counterView.dart';
-
-
 
 /// This is a reimplementation of the default Flutter application using provider + [ChangeNotifier].
 
@@ -17,21 +15,24 @@ void main() {
     /// Providers are above [MyApp] instead of inside it, so that tests
     /// can use [MyApp] while mocking the providers
     MultiProvider(
-      
-      
       providers: [
-        ChangeNotifierProvider(create: (_) => Counter(), ),
-        
+        ChangeNotifierProvider(
+          create: (_) => TimingsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LocationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LocationSet(),
+        ),
       ],
       child: const MyApp(),
     ),
-    
   );
 }
 
 /// Mix-in [DiagnosticableTreeMixin] to have access to [debugFillProperties] for the devtool
 // ignore: prefer_mixin
-
 
 class MyApp extends StatelessWidget {
   const MyApp({key}) : super(key: key);
@@ -39,18 +40,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHomePage(),
-      theme: ThemeData(
-        primaryColor: Colors.greenAccent,
-        textTheme: TextTheme(
-          headline4: TextStyle(color: Colors.black)
-        ),
-        appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
-      )
-      
-
-    );
+        home: MyHomePage(),
+        theme: ThemeData(
+          primaryColor: Colors.greenAccent,
+          textTheme: TextTheme(headline4: TextStyle(color: Colors.black)),
+          appBarTheme:
+              AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
+        ));
   }
 }
-
-

@@ -1,10 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:noor/provider/timingsProvider.dart';
+
 import 'package:noor/views/homePageView.dart';
 import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import 'package:noor/views/mediaView.dart';
+import 'package:provider/provider.dart';
+
 
 class MyHomePage extends StatefulWidget {
   _MyHomePage createState() => _MyHomePage();
@@ -13,10 +18,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePage extends State<MyHomePage> {
   static const title = "Noor-e-Mehdavia";
 
-  var page = 'Blue';
+  var page = 'Grey';
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -39,7 +45,7 @@ class _MyHomePage extends State<MyHomePage> {
             systemNavigationBarIconBrightness: Brightness.dark),
       ),
       extendBody: true,
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       bottomNavigationBar: PandaBar(
         fabIcon: FaIcon(FontAwesomeIcons.kaaba),
         backgroundColor: Theme.of(context).primaryColor,
@@ -81,10 +87,11 @@ class _MyHomePage extends State<MyHomePage> {
                 ),
               );
             default:
-              return Container();
+              return Container(child: CircularProgressIndicator(),);
           }
         },
       ),
     );
   }
 }
+

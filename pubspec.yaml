@@ -41,6 +41,7 @@ dependencies:
 
   geolocator: ^6.1.2
   universal_io: ^2.0.4
+  dio: ^3.0.10
 
 dev_dependencies:
   flutter_test:
