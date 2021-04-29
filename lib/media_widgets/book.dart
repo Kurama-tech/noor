@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:noor/model/books.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:noor/provider/timingsProvider.dart';
+import 'package:provider/provider.dart';
 
 class Book extends StatefulWidget {
   Book({Key key, this.title}) : super(key: key);
@@ -24,60 +25,41 @@ class Book extends StatefulWidget {
 }
 
 class _Book extends State<Book> {
-
-  
   Future<List<Books>> books_data;
 
-    @override
+  @override
   void initState() {
-    books_data = fetchBooks();
+    final booksModel = Provider.of<BooksProvider>(context, listen: false);
+    //books_data = fetchBooks();
+    if (!booksModel.flag) {
+      booksModel.setdata();
+    }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    final booksModel = Provider.of<BooksProvider>(context);
     return Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: FutureBuilder<List<Books>>(
-            future: books_data,
-            builder: (context, snapshot) {
-              print(snapshot.toString());
-              if (snapshot.hasData) {
-               return ListView.builder(
-                 itemCount: snapshot.data.length,
-                 itemBuilder: (context,i){
-                     final datalist = snapshot.data[i];
-                     return Container(
-                       child: Card(child: Column(children: [ Text(datalist.identifier), Text(datalist.name), Text(datalist.url)],),),
-                     );
-                 });
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return CircularProgressIndicator();
-            }));
-  }
-}
-
-Future<List<Books>> fetchBooks() async {
-  var uri = Uri.https('api.nooremahdavia.com', "/media/book");
-  List<Books> ListModel = [];
-  print(uri);
-
-  final response = await http.get(uri);
-
-  if (response.statusCode == 200) {
-    //print(response.body.toString());
-    final data = jsonDecode(response.body);
-    
-    for(Map i in data['results']){
-      //print(i);
-      ListModel.add(Books.fromJson(i));
-    }
-   return ListModel;
-  } else {
-    throw Exception('Failed to load Books');
+        child: !booksModel.flag
+            ? Container(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: booksModel.booksData.length,
+                itemBuilder: (context, i) {
+                  final datalist = booksModel.booksData[i];
+                  return Container(
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Text(datalist.identifier),
+                          Text(datalist.name),
+                          Text(datalist.url)
+                        ],
+                      ),
+                    ),
+                  );
+                }));
   }
 }

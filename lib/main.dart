@@ -25,6 +25,18 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => LocationSet(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => BooksProvider(),
+        ),
+         ChangeNotifierProvider(
+          create: (_) => QuotesProvider(),
+        ),
+         ChangeNotifierProvider(
+          create: (_) => VideosProvider(),
+        ),
+         ChangeNotifierProvider(
+          create: (_) => PhotoProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

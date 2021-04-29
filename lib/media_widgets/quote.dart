@@ -1,10 +1,10 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:noor/model/quotes.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:noor/provider/timingsProvider.dart';
+import 'package:provider/provider.dart';
 
 class Quote extends StatefulWidget {
   Quote({Key key, this.title}) : super(key: key);
@@ -26,59 +26,35 @@ class Quote extends StatefulWidget {
 
 class _Quote extends State<Quote> {
 
-  
-  Future<List<Quotes>> quote_data;
-
-    @override
+  @override
   void initState() {
-    quote_data = fetchQuotes();
+    //quote_data = fetchQuotes();
+    final quotesModel = Provider.of<QuotesProvider>(context, listen: false);
+    if (!quotesModel.flag) {
+      quotesModel.setdata();
+    }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    final quotesModel = Provider.of<QuotesProvider>(context);
     return Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: FutureBuilder<List<Quotes>>(
-            future: quote_data,
-            builder: (context, snapshot) {
-              print(snapshot.toString());
-              if (snapshot.hasData) {
-               return ListView.builder(
-                 itemCount: snapshot.data.length,
-                 itemBuilder: (context,i){
-                     final datalist = snapshot.data[i];
-                     return Container(
-                       child: Card(child: Column(children: [ Text(datalist.identifier), Text(datalist.name), Text(datalist.url)],),),
-                     );
-                 });
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return CircularProgressIndicator();
-            }));
-  }
-}
-
-Future<List<Quotes>> fetchQuotes() async {
-  var uri = Uri.https('api.nooremahdavia.com', "/media/quote");
-  List<Quotes> ListModel = [];
-  print(uri);
-
-  final response = await http.get(uri);
-
-  if (response.statusCode == 200) {
-    //print(response.body.toString());
-    final data = jsonDecode(response.body);
-    
-    for(Map i in data['results']){
-      //print(i);
-      ListModel.add(Quotes.fromJson(i));
-    }
-   return ListModel;
-  } else {
-    throw Exception('Failed to load Quotes');
+        child: !quotesModel.flag
+            ? Container(
+                child: CircularProgressIndicator(),
+              )
+            : GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 4.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                itemBuilder: (context, i) {
+                  final datalist = quotesModel.quotes[i];
+                  print(datalist);
+                  return Image.network(datalist.url);
+                }));
+        
   }
 }

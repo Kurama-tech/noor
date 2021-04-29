@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:noor/model/videos.dart';
-
+import 'package:noor/provider/timingsProvider.dart';
+import 'package:provider/provider.dart';
 
 class Video extends StatefulWidget {
   Video({Key key, this.title}) : super(key: key);
@@ -24,60 +25,41 @@ class Video extends StatefulWidget {
 }
 
 class _Video extends State<Video> {
-
-  
   Future<List<Videos>> video_data;
 
-    @override
+  @override
   void initState() {
-    video_data = fetchvideos();
+    //video_data = fetchvideos();
+    final videosModel = Provider.of<VideosProvider>(context, listen: false);
+    if (!videosModel.flag) {
+      videosModel.setdata();
+    }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    final videosModel = Provider.of<VideosProvider>(context, listen: false);
     return Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: FutureBuilder<List<Videos>>(
-            future: video_data,
-            builder: (context, snapshot) {
-              print(snapshot.toString());
-              if (snapshot.hasData) {
-               return ListView.builder(
-                 itemCount: snapshot.data.length,
-                 itemBuilder: (context,i){
-                     final datalist = snapshot.data[i];
-                     return Container(
-                       child: Card(child: Column(children: [ Text(datalist.display_image),Text(datalist.identifier), Text(datalist.name), Text(datalist.url)],),),
-                     );
-                 });
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return CircularProgressIndicator();
-            }));
-  }
-}
-
-Future<List<Videos>> fetchvideos() async {
-  var uri = Uri.https('api.nooremahdavia.com', "/media/video");
-  List<Videos> ListModel = [];
-  print(uri);
-
-  final response = await http.get(uri);
-
-  if (response.statusCode == 200) {
-    //print(response.body.toString());
-    final data = jsonDecode(response.body);
-    
-    for(Map i in data['results']){
-      //print(i);
-      ListModel.add(Videos.fromJson(i));
-    }
-   return ListModel;
-  } else {
-    throw Exception('Failed to load Videos');
+        child: !videosModel.flag
+            ? Container(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: videosModel.videos.length,
+                itemBuilder: (context, i) {
+                  final datalist = videosModel.videos[i];
+                  return Container(
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Text(datalist.identifier),
+                          Text(datalist.name),
+                          Text(datalist.url)
+                        ],
+                      ),
+                    ),
+                  );
+                }));
   }
 }

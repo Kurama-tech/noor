@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:noor/model/photos.dart';
-
+import 'package:noor/provider/timingsProvider.dart';
+import 'package:provider/provider.dart';
 
 class Photo extends StatefulWidget {
   Photo({Key key, this.title}) : super(key: key);
@@ -25,61 +26,36 @@ class Photo extends StatefulWidget {
 }
 
 class _Photo extends State<Photo> {
-
-  
   Future<List<Photos>> photo_data;
 
-    @override
+  @override
   void initState() {
-    photo_data = fetchphoto();
+    final photoModel = Provider.of<PhotoProvider>(context, listen: false);
+    //photo_data = fetchphoto();
+    if (!photoModel.flag) {
+      photoModel.setdata();
+    }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    final photoModel = Provider.of<PhotoProvider>(context);
     return Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: FutureBuilder<List<Photos>>(
-            future: photo_data,
-            builder: (context, snapshot) {
-              print(snapshot.toString());
-              if (snapshot.hasData) {
-               return ListView.builder(
-                 itemCount: snapshot.data.length,
-                 itemBuilder: (context,i){
-                     final datalist = snapshot.data[i];
-                     return Container(
-                       child: Card(child: Column(children: [ Text(datalist.identifier), Text(datalist.name), Text(datalist.url)],),),
-                     );
-                 });
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return CircularProgressIndicator();
-            }));
-  }
-}
-
-Future<List<Photos>> fetchphoto() async {
-  var uri = Uri.https('api.nooremahdavia.com', "/media/photo");
-  List<Photos> ListModel = [];
-  print(uri);
-
-  var dio = Dio();
-  final response = await dio.get(uri.toString());
-
-  if (response.statusCode == 200) {
-    //print(response.body.toString());
-    final data = jsonDecode(response.data.toString());
-    
-    for(Map i in data['results']){
-      //print(i);
-      ListModel.add(Photos.fromJson(i));
-    }
-   return ListModel;
-  } else {
-    throw Exception('Failed to load Photos');
+        child: !photoModel.flag
+            ? Container(
+                child: CircularProgressIndicator(),
+              )
+            : GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 4.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                itemBuilder: (context, i) {
+                  final datalist = photoModel.photos[i];
+                  print(datalist);
+                  return Image.network(datalist.url);
+                }));
   }
 }
