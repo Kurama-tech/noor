@@ -8,6 +8,7 @@ import 'package:noor/model/quotes.dart';
 import 'package:noor/model/timings.dart';
 import 'package:noor/model/location.dart';
 import 'package:noor/model/videos.dart';
+import 'package:latlong/latlong.dart';
 
 class TimingsProvider with ChangeNotifier {
   Timings timings = Timings();
@@ -23,9 +24,10 @@ class TimingsProvider with ChangeNotifier {
 
 class LocationProvider with ChangeNotifier {
   LocationModel location = LocationModel();
-
+  LatLng latlang;
   setLocationData(data) {
     location = data;
+    
     notifyListeners();
   }
 }
@@ -112,7 +114,6 @@ class QuotesProvider with ChangeNotifier {
   }
 }
 
-
 class VideosProvider with ChangeNotifier {
   List<Videos> videos;
   bool flag = false;
@@ -125,31 +126,30 @@ class VideosProvider with ChangeNotifier {
     });
   }
 
-Future<List<Videos>> fetchvideos() async {
-  var uri = Uri.https('api.nooremahdavia.com', "/media/video");
-  List<Videos> ListModel = [];
-  print(uri);
+  Future<List<Videos>> fetchvideos() async {
+    var uri = Uri.https('api.nooremahdavia.com', "/media/video");
+    List<Videos> ListModel = [];
+    print(uri);
 
-  var dio = Dio();
+    var dio = Dio();
     final response = await dio.get(uri.toString());
 
-  if (response.statusCode == 200) {
-    //print(response.body.toString());
-    final data = jsonDecode(response.toString());
-    
-    for(Map i in data['results']){
-      //print(i);
-      ListModel.add(Videos.fromJson(i));
+    if (response.statusCode == 200) {
+      //print(response.body.toString());
+      final data = jsonDecode(response.toString());
+
+      for (Map i in data['results']) {
+        //print(i);
+        ListModel.add(Videos.fromJson(i));
+      }
+      return ListModel;
+    } else {
+      throw Exception('Failed to load Videos');
     }
-   return ListModel;
-  } else {
-    throw Exception('Failed to load Videos');
   }
-}
 }
 
 class PhotoProvider with ChangeNotifier {
-
   List<Photos> photos;
   bool flag = false;
 
@@ -162,26 +162,24 @@ class PhotoProvider with ChangeNotifier {
   }
 
   Future<List<Photos>> fetchphoto() async {
-  var uri = Uri.https('api.nooremahdavia.com', "/media/photo");
-  List<Photos> ListModel = [];
-  print(uri);
+    var uri = Uri.https('api.nooremahdavia.com', "/media/photo");
+    List<Photos> ListModel = [];
+    print(uri);
 
-  var dio = Dio();
-  final response = await dio.get(uri.toString());
+    var dio = Dio();
+    final response = await dio.get(uri.toString());
 
-  if (response.statusCode == 200) {
-    //print(response.toString());
-    final data = jsonDecode(response.toString());
+    if (response.statusCode == 200) {
+      //print(response.toString());
+      final data = jsonDecode(response.toString());
 
-    for (Map i in data['results']) {
-      //print(i);
-      ListModel.add(Photos.fromJson(i));
+      for (Map i in data['results']) {
+        //print(i);
+        ListModel.add(Photos.fromJson(i));
+      }
+      return ListModel;
+    } else {
+      throw Exception('Failed to load Photos');
     }
-    return ListModel;
-  } else {
-    throw Exception('Failed to load Photos');
   }
-}
-
-
 }
