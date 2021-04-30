@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:noor/model/videos.dart';
 import 'package:noor/provider/timingsProvider.dart';
 import 'package:provider/provider.dart';
@@ -34,13 +31,14 @@ class _Video extends State<Video> {
     final videosModel = Provider.of<VideosProvider>(context, listen: false);
     if (!videosModel.flag) {
       videosModel.setdata();
+
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final videosModel = Provider.of<VideosProvider>(context, listen: false);
+    final videosModel = Provider.of<VideosProvider>(context);
     return Center(
         child: !videosModel.flag
             ? Container(
@@ -57,7 +55,7 @@ class _Video extends State<Video> {
                         elevation: 5,
                         child: Center(
                           child: ListTile(
-                            leading: Icon(Icons.videocam, size: 35.0),
+                            leading: Icon(Icons.video_label, size: 35.0),
                             title: Text(
                               datalist.name,
                               style: TextStyle(fontSize: 15.0),
