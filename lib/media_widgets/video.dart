@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:noor/model/videos.dart';
 import 'package:noor/provider/timingsProvider.dart';
@@ -60,7 +61,7 @@ class _Video extends State<Video> {
                             leading: Icon(Icons.videocam, size: 35.0),
                             title: Text(
                               datalist.name,
-                              style: TextStyle(fontSize: 15.0),
+                              style:GoogleFonts.robotoSlab(fontSize: 15.0),
                             ),
                             trailing: Icon(Icons.keyboard_arrow_right),
 
