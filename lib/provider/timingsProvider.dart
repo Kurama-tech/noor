@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:noor/model/books.dart';
+import 'package:noor/model/mosquesModel.dart';
 import 'package:noor/model/photos.dart';
 import 'package:noor/model/quotes.dart';
 import 'package:noor/model/timings.dart';
@@ -140,7 +141,7 @@ class VideosProvider with ChangeNotifier {
 
       for (Map i in data['results']) {
         //print(i);
-        if(i['name'] != ""){
+        if (i['name'] != "") {
           ListModel.add(Videos.fromJson(i));
         }
       }
@@ -180,6 +181,46 @@ class PhotoProvider with ChangeNotifier {
         ListModel.add(Photos.fromJson(i));
       }
       return ListModel;
+    } else {
+      throw Exception('Failed to load Photos');
+    }
+  }
+}
+
+class MapsProvider with ChangeNotifier {
+  ConcatMD data;
+
+  bool flag = false;
+  setdata() {
+    fetchMaps().then((value) {
+      data = value;
+      flag = true;
+      notifyListeners();
+    });
+  }
+
+  Future<ConcatMD> fetchMaps() async {
+    var uri = Uri.https('api.nooremahdavia.com', "/mosques");
+    List<MosquesDairah> mosques = [];
+    List<MosquesDairah> dairahs = [];
+
+    var dio = Dio();
+    final response = await dio.get(uri.toString());
+
+    if (response.statusCode == 200) {
+      //print(response.toString());
+      final data = jsonDecode(response.toString());
+
+      for (Map i in data['mosques']) {
+        //print(i);
+        mosques.add(MosquesDairah.fromJson(i));
+      }
+      for (Map i in data['dairahs']) {
+        dairahs.add(MosquesDairah.fromJson(i));
+      }
+
+      ConcatMD finaldata = new ConcatMD(mosques: mosques, dairahs: dairahs);
+      return finaldata;
     } else {
       throw Exception('Failed to load Photos');
     }

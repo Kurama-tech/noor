@@ -37,6 +37,9 @@ void main() {
          ChangeNotifierProvider(
           create: (_) => PhotoProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => MapsProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

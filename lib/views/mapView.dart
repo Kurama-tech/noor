@@ -1,99 +1,95 @@
-import 'dart:math';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:noor/model/mosquesModel.dart';
 import 'package:noor/provider/timingsProvider.dart';
 import 'package:provider/provider.dart';
 
-const maxMarkersCount = 5000;
-
-/// On this page, [maxMarkersCount] markers are randomly generated
-/// across europe, and then you can limit them with a slider
-///
-/// This way, you can test how map performs under a lot of markers
-class ManyMarkersPage extends StatefulWidget {
-  static const String route = '/many_markers';
-
+class FullMap extends StatefulWidget {
   @override
-  _ManyMarkersPageState createState() => _ManyMarkersPageState();
+  State createState() => FullMapState();
 }
 
-class _ManyMarkersPageState extends State<ManyMarkersPage> {
-  double doubleInRange(Random source, num start, num end) =>
-      source.nextDouble() * (end - start) + start;
-  List<Marker> allMarkers = [];
-
-  int _sliderVal = maxMarkersCount ~/ 10;
+class FullMapState extends State<FullMap> {
+  MapboxMapController mapController;
 
   @override
   void initState() {
+    final markersModel = Provider.of<MapsProvider>(context, listen: false);
+    if (!markersModel.flag) {
+      markersModel.setdata();
+    }
     super.initState();
-    /* Future.microtask(() {
-      var r = Random();
-      for (var x = 0; x < maxMarkersCount; x++) {
-        allMarkers.add(
-          Marker(
-            point: LatLng(
-              doubleInRange(r, 37, 55),
-              doubleInRange(r, -9, 30),
-            ),
-            builder: (context) => const Icon(
-              Icons.circle,
-              color: Colors.red,
-              size: 12.0,
-            ),
+  }
+
+  void _onMapCreated(MapboxMapController controller) {
+    mapController = controller;
+    mapController.onSymbolTapped.add((argument) {
+      MosquesDairah symbolData = MosquesDairah.fromJson(argument.data);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          content: Text(symbolData.name),
+          action: SnackBarAction(
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+            label: 'Navigate',
           ),
-        );
-      }
-      setState(() {});
-    }); */
+        ),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final locationModel = Provider.of<LocationProvider>(context);
-    print(locationModel.location.lat);
-    print(locationModel.location.long);
-    return Column(
-      children: [
-        Flexible(
-          child: FlutterMap(
-            options: MapOptions(
-              center: LatLng(double.parse(locationModel.location.lat),
-                  double.parse(locationModel.location.long)),
-              zoom: 25.0,
-              interactiveFlags: InteractiveFlag.all - InteractiveFlag.rotate,
-            ),
-            layers: [
-              TileLayerOptions(
-                urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                subdomains: ['a', 'b', 'c'],
-              ),
-              MarkerLayerOptions(markers: [
-                Marker(
-                  point: LatLng(double.parse(locationModel.location.lat),
-                      double.parse(locationModel.location.long)),
-                  builder: (ctx) => Container(
-                      child: GestureDetector(
-                    onTap: () {
-                      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-                        behavior: SnackBarBehavior.fixed,
-                        content: Text('Tapped on purple FlutterLogo Marker'),
-                        action: SnackBarAction(onPressed: () {
-                          Scaffold.of(ctx).hideCurrentSnackBar();
-                        }, label: 'close',),
-                      ),).closed.then((value) => SnackBarClosedReason.action);
-                    },
-                    child: FlutterLogo(textColor: Colors.purple),
-                  )),
-                )
-              ]),
-            ],
-          ),
-        ),
-      ],
-    );
+    final markersModel = Provider.of<MapsProvider>(context);
+    return Center(
+        child: !markersModel.flag
+            ? Container(
+                child: CircularProgressIndicator(),
+              )
+            : MapboxMap(
+                minMaxZoomPreference: MinMaxZoomPreference.unbounded,
+                accessToken:
+                    'your-key-here',
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                    zoom: 1.0,
+                    target: LatLng(double.parse(locationModel.location.lat),
+                        double.parse(locationModel.location.long))),
+                onStyleLoadedCallback: () =>
+                    addSymbols(mapController, markersModel.data)));
   }
+
+  void addSymbols(MapboxMapController mapBoxController, ConcatMD data) {
+    addSymbolsMD(mapBoxController, data.mosques);
+    addSymbolsMD(mapBoxController, data.dairahs);
+  }
+
+  void addSymbolsMD(
+      MapboxMapController mapBoxController, List<MosquesDairah> data) {
+    //List<SymbolOptions> markers = [];
+    for (MosquesDairah i in data) {
+      LatLng latLng = LatLng(i.latitude, i.longitude);
+      SymbolOptions symbol = new SymbolOptions(
+        geometry: latLng,
+        iconImage: 'assets/pin_mosque.png',
+        iconSize: 3,
+      );
+      //markers.add(symbol);
+      mapController.addSymbol(symbol, i.toJson());
+    }
+  }
+}
+
+Widget bottom(context) {
+  return BottomSheet(
+      onClosing: () => {print("closed")},
+      builder: (context) {
+        return InkWell(
+          child: Text("i am coming from bottom"),
+        );
+      });
 }
