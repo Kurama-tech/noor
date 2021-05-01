@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:noor/provider/timingsProvider.dart';
+import 'package:noor/views/calenderView.dart';
 
 import 'package:noor/views/homePageView.dart';
 import 'package:noor/views/mapView.dart';
@@ -9,7 +9,6 @@ import 'package:pandabar/main.view.dart';
 import 'package:pandabar/pandabar.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import 'package:noor/views/mediaView.dart';
-import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   _MyHomePage createState() => _MyHomePage();
@@ -73,9 +72,9 @@ class _MyHomePage extends State<MyHomePage> {
             case 'Grey':
               return Home();
             case 'Blue':
-              return Container(color: Colors.blue.shade900);
+              return Calendar();
             case 'Red':
-              return ManyMarkersPage();
+              return FullMap();
             case 'Yellow':
               return Media();
             case 'fab':
