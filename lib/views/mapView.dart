@@ -26,7 +26,7 @@ class FullMapState extends State<FullMap> {
     mapController = controller;
     mapController.onSymbolTapped.add((argument) {
       MosquesDairah symbolData = MosquesDairah.fromJson(argument.data);
-      ScaffoldMessenger.of(context).showSnackBar(
+      /*    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.fixed,
           content: Text(symbolData.name),
@@ -37,7 +37,8 @@ class FullMapState extends State<FullMap> {
             label: 'Navigate',
           ),
         ),
-      );
+      ); */
+      displayModalBottomSheet(context);
     });
   }
 
@@ -53,7 +54,7 @@ class FullMapState extends State<FullMap> {
             : MapboxMap(
                 minMaxZoomPreference: MinMaxZoomPreference.unbounded,
                 accessToken:
-                    'your-key-here',
+                    '',
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
                     zoom: 1.0,
@@ -84,12 +85,24 @@ class FullMapState extends State<FullMap> {
   }
 }
 
-Widget bottom(context) {
-  return BottomSheet(
-      onClosing: () => {print("closed")},
-      builder: (context) {
-        return InkWell(
-          child: Text("i am coming from bottom"),
+void displayModalBottomSheet(context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                  leading: new Icon(Icons.music_note),
+                  title: new Text('Music'),
+                  subtitle: new Text('Address'),
+                  trailing: new MaterialButton( child: Text("Navigate") ,onPressed: () => {}),
+                ),
+              ],
+            ),
+          ),
         );
       });
 }

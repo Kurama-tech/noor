@@ -50,7 +50,7 @@
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Can I haz location always?</string>
 	<key>MGLMapboxAccessToken</key>
-    <string>your-key-here</string>
+    <string>pk.eyJ1IjoibXNhd29vZCIsImEiOiJja280NHkxc20wMmt4MnZuenVmMm0wbXExIn0.fIbZuEIQ5kdtLGyBxWTkMg</string>
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<true/>
 </dict>
