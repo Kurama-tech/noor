@@ -62,7 +62,7 @@ class _ManyMarkersPageState extends State<ManyMarkersPage> {
             options: MapOptions(
               center: LatLng(double.parse(locationModel.location.lat),
                   double.parse(locationModel.location.long)),
-              zoom: 7.0,
+              zoom: 25.0,
               interactiveFlags: InteractiveFlag.all - InteractiveFlag.rotate,
             ),
             layers: [
@@ -75,11 +75,19 @@ class _ManyMarkersPageState extends State<ManyMarkersPage> {
                 Marker(
                   point: LatLng(double.parse(locationModel.location.lat),
                       double.parse(locationModel.location.long)),
-                  builder: (context) => const Icon(
-                    Icons.location_city,
-                    color: Colors.red,
-                    size: 35.0,
-                  ),
+                  builder: (ctx) => Container(
+                      child: GestureDetector(
+                    onTap: () {
+                      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.fixed,
+                        content: Text('Tapped on purple FlutterLogo Marker'),
+                        action: SnackBarAction(onPressed: () {
+                          Scaffold.of(ctx).hideCurrentSnackBar();
+                        }, label: 'close',),
+                      ),).closed.then((value) => SnackBarClosedReason.action);
+                    },
+                    child: FlutterLogo(textColor: Colors.purple),
+                  )),
                 )
               ]),
             ],

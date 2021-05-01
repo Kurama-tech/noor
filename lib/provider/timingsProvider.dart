@@ -27,7 +27,7 @@ class LocationProvider with ChangeNotifier {
   LatLng latlang;
   setLocationData(data) {
     location = data;
-    
+
     notifyListeners();
   }
 }
@@ -140,7 +140,9 @@ class VideosProvider with ChangeNotifier {
 
       for (Map i in data['results']) {
         //print(i);
-        ListModel.add(Videos.fromJson(i));
+        if(i['name'] != ""){
+          ListModel.add(Videos.fromJson(i));
+        }
       }
       return ListModel;
     } else {

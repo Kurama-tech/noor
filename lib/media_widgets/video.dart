@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -35,13 +33,14 @@ class _Video extends State<Video> {
     final videosModel = Provider.of<VideosProvider>(context, listen: false);
     if (!videosModel.flag) {
       videosModel.setdata();
+
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final videosModel = Provider.of<VideosProvider>(context, listen: false);
+    final videosModel = Provider.of<VideosProvider>(context);
     return Center(
         child: !videosModel.flag
             ? Container(
@@ -58,7 +57,7 @@ class _Video extends State<Video> {
                         elevation: 5,
                         child: Center(
                           child: ListTile(
-                            leading: Icon(Icons.videocam, size: 35.0),
+                            leading: Image.network(datalist.display_image),
                             title: Text(
                               datalist.name,
                               style:GoogleFonts.robotoSlab(fontSize: 15.0),
