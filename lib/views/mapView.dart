@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:noor/model/mosquesModel.dart';
 import 'package:noor/provider/timingsProvider.dart';
 import 'package:provider/provider.dart';
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
 
 class FullMap extends StatefulWidget {
   @override
@@ -26,7 +28,7 @@ class FullMapState extends State<FullMap> {
     mapController = controller;
     mapController.onSymbolTapped.add((argument) {
       MosquesDairah symbolData = MosquesDairah.fromJson(argument.data);
-      ScaffoldMessenger.of(context).showSnackBar(
+      /*    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.fixed,
           content: Text(symbolData.name),
@@ -37,7 +39,8 @@ class FullMapState extends State<FullMap> {
             label: 'Navigate',
           ),
         ),
-      );
+      ); */
+      displayModalBottomSheet(context,symbolData);
     });
   }
 
@@ -53,10 +56,10 @@ class FullMapState extends State<FullMap> {
             : MapboxMap(
                 minMaxZoomPreference: MinMaxZoomPreference.unbounded,
                 accessToken:
-                    'your-key-here',
+                    'pk.eyJ1IjoibXNhd29vZCIsImEiOiJja280NHkxc20wMmt4MnZuenVmMm0wbXExIn0.fIbZuEIQ5kdtLGyBxWTkMg',
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
-                    zoom: 1.0,
+                    zoom: 14.0,
                     target: LatLng(double.parse(locationModel.location.lat),
                         double.parse(locationModel.location.long))),
                 onStyleLoadedCallback: () =>
@@ -84,12 +87,26 @@ class FullMapState extends State<FullMap> {
   }
 }
 
-Widget bottom(context) {
-  return BottomSheet(
-      onClosing: () => {print("closed")},
-      builder: (context) {
-        return InkWell(
-          child: Text("i am coming from bottom"),
+void displayModalBottomSheet(context, MosquesDairah data) {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                  leading: new Icon(FontAwesomeIcons.mosque),
+                  title: new Text(data.name),
+                  subtitle: new Text(data.address,
+                  style:GoogleFonts.robotoSlab(fontSize: 15.0)
+                  ),
+                  trailing: new MaterialButton( child: Text("Navigate") ,onPressed: () => {}),
+                ),
+              ],
+            ),
+          ),
         );
       });
 }
