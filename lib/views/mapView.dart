@@ -56,7 +56,7 @@ class FullMapState extends State<FullMap> {
             : MapboxMap(
                 minMaxZoomPreference: MinMaxZoomPreference.unbounded,
                 accessToken:
-                    'pk.eyJ1IjoibXNhd29vZCIsImEiOiJja280NHkxc20wMmt4MnZuenVmMm0wbXExIn0.fIbZuEIQ5kdtLGyBxWTkMg',
+                    '',
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
                     zoom: 14.0,
