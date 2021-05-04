@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:noor/model/mosquesModel.dart';
 import 'package:noor/provider/timingsProvider.dart';
 import 'package:provider/provider.dart';
@@ -97,12 +98,19 @@ void displayModalBottomSheet(context, MosquesDairah data) {
             child: new Wrap(
               children: <Widget>[
                 new ListTile(
-                  leading: new Icon(FontAwesomeIcons.mosque),
+                  leading: new Icon(FontAwesomeIcons.mosque,color: Colors.green,),
                   title: new Text(data.name),
                   subtitle: new Text(data.address,
                   style:GoogleFonts.robotoSlab(fontSize: 15.0)
                   ),
-                  trailing: new MaterialButton( child: Text("Navigate") ,onPressed: () => {}),
+                  trailing: new MaterialButton(
+                    
+                    color: Colors.blue,
+                    child: Text("Navigate"),
+                    onPressed: () => {
+                    MapsLauncher.launchCoordinates(data.latitude,data.longitude)
+
+                  }),
                 ),
               ],
             ),

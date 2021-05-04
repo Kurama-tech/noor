@@ -50,6 +50,7 @@ dependencies:
   url_launcher: ^6.0.3
   mapbox_gl: ^0.12.0
   syncfusion_flutter_calendar: ^19.1.58
+  maps_launcher: ^2.0.0
 
 dev_dependencies:
   flutter_test:
